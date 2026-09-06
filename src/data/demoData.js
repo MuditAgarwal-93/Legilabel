@@ -1,0 +1,230 @@
+export const currentUser = {
+  name: "xyz",
+  role: "Compliance Officer",
+  email: "xyz@nourishco.in",
+  company: "NourishCo Foods Pvt. Ltd.",
+};
+
+export const summaryStats = [
+  { id: "total", label: "Total Products", value: "48", change: "+6 this month" },
+  { id: "compliant", label: "Compliant", value: "31", change: "64% of catalogue" },
+  { id: "review", label: "Needs Review", value: "11", change: "3 due this week" },
+  { id: "issues", label: "Potential Issues", value: "6", change: "2 high priority" },
+];
+
+export const complianceOverview = [
+  { label: "Compliant", value: 31, color: "#16a34a" },
+  { label: "Needs review", value: 11, color: "#d97706" },
+  { label: "Issues", value: 6, color: "#dc2626" },
+];
+
+export const products = [
+  {
+    id: "p1",
+    name: "Himalayan Wild Honey",
+    sku: "NC-HNY-500",
+    category: "Food",
+    netQuantity: "500 g",
+    compliance: "Compliant",
+    score: 96,
+    lastChecked: "1 Sep 2026",
+    version: "v3.2",
+  },
+  {
+    id: "p2",
+    name: "Organic Turmeric Powder",
+    sku: "NC-TRM-200",
+    category: "Spices",
+    netQuantity: "200 g",
+    compliance: "Needs Review",
+    score: 78,
+    lastChecked: "28 Aug 2026",
+    version: "v2.1",
+  },
+  {
+    id: "p3",
+    name: "Everyday Basmati Rice",
+    sku: "NC-RCE-5KG",
+    category: "Staples",
+    netQuantity: "5 kg",
+    compliance: "Compliant",
+    score: 92,
+    lastChecked: "26 Aug 2026",
+    version: "v4.0",
+  },
+  {
+    id: "p4",
+    name: "Cold Pressed Mustard Oil",
+    sku: "NC-OIL-1L",
+    category: "Edible Oil",
+    netQuantity: "1 L",
+    compliance: "Potential Issues",
+    score: 61,
+    lastChecked: "22 Aug 2026",
+    version: "v1.4",
+  },
+  {
+    id: "p5",
+    name: "Millet Breakfast Mix",
+    sku: "NC-MLT-400",
+    category: "Health Foods",
+    netQuantity: "400 g",
+    compliance: "Needs Review",
+    score: 74,
+    lastChecked: "20 Aug 2026",
+    version: "v1.8",
+  },
+  {
+    id: "p6",
+    name: "A2 Cow Ghee",
+    sku: "NC-GHE-500",
+    category: "Dairy",
+    netQuantity: "500 ml",
+    compliance: "Compliant",
+    score: 94,
+    lastChecked: "18 Aug 2026",
+    version: "v2.0",
+  },
+];
+
+export const recentScans = [
+  {
+    id: "s1",
+    product: "Himalayan Wild Honey",
+    date: "1 Sep 2026, 10:24 AM",
+    score: 96,
+    status: "Compliant",
+    version: "v3.2",
+  },
+  {
+    id: "s2",
+    product: "Organic Turmeric Powder",
+    date: "28 Aug 2026, 4:11 PM",
+    score: 78,
+    status: "Needs Review",
+    version: "v2.1",
+  },
+  {
+    id: "s3",
+    product: "Cold Pressed Mustard Oil",
+    date: "22 Aug 2026, 11:02 AM",
+    score: 61,
+    status: "Potential Issues",
+    version: "v1.4",
+  },
+  {
+    id: "s4",
+    product: "Everyday Basmati Rice",
+    date: "26 Aug 2026, 9:40 AM",
+    score: 92,
+    status: "Compliant",
+    version: "v4.0",
+  },
+];
+
+export const reports = [
+  {
+    id: "r1",
+    name: "Q2 Label Compliance Summary",
+    product: "All products",
+    date: "30 Aug 2026",
+    status: "Ready",
+  },
+  {
+    id: "r2",
+    name: "Mustard Oil Label Review",
+    product: "Cold Pressed Mustard Oil",
+    date: "22 Aug 2026",
+    status: "Action required",
+  },
+  {
+    id: "r3",
+    name: "Honey Pack Artwork Check",
+    product: "Himalayan Wild Honey",
+    date: "1 Sep 2026",
+    status: "Ready",
+  },
+  {
+    id: "r4",
+    name: "Inspector Visit Pack — Warehouse 2",
+    product: "Multiple SKUs",
+    date: "15 Aug 2026",
+    status: "Archived",
+  },
+];
+
+export const historyTimeline = [
+  {
+    id: "h1",
+    product: "Himalayan Wild Honey",
+    date: "1 Sep 2026",
+    score: 96,
+    status: "Compliant",
+    version: "v3.2",
+    note: "Consumer care number updated on back panel.",
+  },
+  {
+    id: "h2",
+    product: "Himalayan Wild Honey",
+    date: "12 Jul 2026",
+    score: 84,
+    status: "Needs Review",
+    version: "v3.1",
+    note: "MRP font size flagged for secondary pack.",
+  },
+  {
+    id: "h3",
+    product: "Organic Turmeric Powder",
+    date: "28 Aug 2026",
+    score: 78,
+    status: "Needs Review",
+    version: "v2.1",
+    note: "Net quantity unit placement needs confirmation.",
+  },
+  {
+    id: "h4",
+    product: "Cold Pressed Mustard Oil",
+    date: "22 Aug 2026",
+    score: 61,
+    status: "Potential Issues",
+    version: "v1.4",
+    note: "Manufacturer address appears incomplete on demo scan.",
+  },
+  {
+    id: "h5",
+    product: "Everyday Basmati Rice",
+    date: "26 Aug 2026",
+    score: 92,
+    status: "Compliant",
+    version: "v4.0",
+    note: "All mandatory declarations present in demo check.",
+  },
+];
+
+export const demoResult = {
+  productName: "Himalayan Wild Honey",
+  sku: "NC-HNY-500",
+  manufacturer: "NourishCo Foods Pvt. Ltd., Pune",
+  netQuantity: "500 g",
+  mrp: "₹449 (incl. of all taxes)",
+  score: 88,
+  status: "Needs Review",
+  checks: [
+    { id: "c1", label: "Product name", status: "pass", detail: "Principal display panel includes the product name." },
+    { id: "c2", label: "Manufacturer details", status: "pass", detail: "Name and address are visible on the demo label." },
+    { id: "c3", label: "Net quantity", status: "pass", detail: "Net quantity is declared with unit of measurement." },
+    { id: "c4", label: "MRP", status: "pass", detail: "Maximum retail price is present, inclusive of taxes." },
+    {
+      id: "c5",
+      label: "Consumer care information",
+      status: "pass",
+      detail: "Phone and email for consumer complaints are shown.",
+    },
+    {
+      id: "c6",
+      label: "Some information needs review",
+      status: "warn",
+      detail: "Country of origin and date of manufacture need a closer human check.",
+    },
+  ],
+};
