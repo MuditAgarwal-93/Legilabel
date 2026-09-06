@@ -409,6 +409,9 @@ app.post("/api/analyze", upload.single("file"), async (req, res) => {
     });
   }
 
+  const productCategory = req.body.productCategory;
+  const productOrigin = req.body.productOrigin;
+
   try {
     console.log("File received:", req.file.originalname);
     console.log("Starting OCR...");
@@ -486,6 +489,8 @@ const complianceResult = checkCompliance({
   date: productInfo.date,
   countryOfOrigin: productInfo.countryOfOrigin,
   consumerCare: productInfo.consumerCare,
+  productCategory,
+  productOrigin,
 });
 
    res.json({

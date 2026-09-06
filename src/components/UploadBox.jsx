@@ -10,7 +10,7 @@ export default function UploadBox({ file, previewUrl, onFileSelect }) {
   const selected = event.target.files?.[0];
 
  if (selected) {
-  alert(`Photo selected: ${selected.name}`);
+  console.log(`Photo selected: ${selected.name}`);
   onFileSelect(selected);
 }
 }

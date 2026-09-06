@@ -13,6 +13,7 @@ const [loading, setLoading] = useState(false);
 
 const [productCategory, setProductCategory] = useState("");
 const [productOrigin, setProductOrigin] = useState("");
+
   useEffect(() => {
     if (!uploadedFile || uploadedFile.type === "application/pdf") {
       setPreviewUrl("");
@@ -20,13 +21,24 @@ const [productOrigin, setProductOrigin] = useState("");
     }
     const url = URL.createObjectURL(uploadedFile);
     setPreviewUrl(url);
+    
     return () => URL.revokeObjectURL(url);
   }, [uploadedFile]);
 
 
-  async function analyze() {
+ async function analyze() {
   if (!uploadedFile) {
-    showToast("Select an image or PDF first.");
+    showToast("Please upload an image or PDF first.");
+    return;
+  }
+
+  if (!productCategory) {
+    showToast("Please select a product category.");
+    return;
+  }
+
+  if (!productOrigin) {
+    showToast("Please select the product origin.");
     return;
   }
 
@@ -35,6 +47,8 @@ const [productOrigin, setProductOrigin] = useState("");
   try {
     const formData = new FormData();
     formData.append("file", uploadedFile);
+    formData.append("productCategory", productCategory);
+    formData.append("productOrigin", productOrigin);
 
     const response = await fetch("http://localhost:5000/api/analyze", {
       method: "POST",
@@ -56,7 +70,6 @@ const [productOrigin, setProductOrigin] = useState("");
     setLoading(false);
   }
 }
-
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <UploadBox
