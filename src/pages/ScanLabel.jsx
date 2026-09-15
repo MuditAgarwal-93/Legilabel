@@ -6,7 +6,14 @@ import { demoResult } from "../data/demoData";
 
 export default function ScanLabel() {
   const navigate = useNavigate();
-  const { uploadedFile, setUploadedFile, setLastResult, showToast } = useApp();
+const {
+  uploadedFile,
+  setUploadedFile,
+  setLastResult,
+  history,
+  setHistory,
+  showToast,
+} = useApp();
 
   const [previewUrl, setPreviewUrl] = useState("");
 const [loading, setLoading] = useState(false);
@@ -61,8 +68,23 @@ const [productOrigin, setProductOrigin] = useState("");
       throw new Error(data.message || "Analysis failed");
     }
 
-    setLastResult(data.result);
-    navigate("/result");
+    const resultWithHistory = {
+  ...data.result,
+  historyId: Date.now(),
+  historyDate: new Date().toLocaleString(),
+  productCategory,
+  productOrigin,
+};
+
+setLastResult(resultWithHistory);
+
+setHistory((previousHistory) => [
+  resultWithHistory,
+  ...previousHistory,
+]);
+
+navigate("/result");
+
   } catch (error) {
     console.error("Analysis error:", error);
     showToast("Could not analyze the file. Make sure the backend is running.");

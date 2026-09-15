@@ -817,7 +817,7 @@ console.log("SET ANALYSIS MODE:", productInfo.analysisMode);
 
 try {
   console.log("Starting Gemini AI extraction...");
-  //throw new Error("TEST: Simulated Gemini failure");
+  throw new Error("TEST: Simulated Gemini failure");
 
   const aiProductInfo = await extractProductInfoWithGemini(
   extractedText,

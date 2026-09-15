@@ -1,12 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import { Download, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 import ComplianceBadge from "../components/ComplianceBadge";
-import { reports } from "../data/demoData";
 import { useApp } from "../context/AppContext";
+import { generateReport } from "../utils/generateReport";
 
 export default function Reports() {
-  const { showToast } = useApp();
+const navigate = useNavigate();
+const { history, setLastResult, showToast } = useApp();
 
+function openReport(item) {
+  setLastResult(item);
+  navigate("/result");
+}
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <div className="border-b border-slate-100 px-5 py-4">
@@ -25,34 +31,62 @@ export default function Reports() {
               <th className="px-5 py-3 font-medium">Download</th>
             </tr>
           </thead>
-          <tbody>
-            {reports.map((report) => (
-              <tr key={report.id} className="border-t border-slate-100">
-                <td className="px-5 py-4 font-medium">{report.name}</td>
-                <td className="px-5 py-4 text-slate-600">{report.product}</td>
-                <td className="px-5 py-4 text-slate-600">{report.date}</td>
-                <td className="px-5 py-4">
-                  <ComplianceBadge status={report.status} />
-                </td>
-                <td className="px-5 py-4">
-                  <Link to="/result" className="inline-flex items-center gap-1 font-medium text-brand">
-                    <Eye size={14} />
-                    View
-                  </Link>
-                </td>
-                <td className="px-5 py-4">
-                  <button
-                    type="button"
-                    onClick={() => showToast("Download is demo-only for now.")}
-                    className="inline-flex items-center gap-1 font-medium text-slate-700"
-                  >
-                    <Download size={14} />
-                    Download
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+        <tbody>
+  {history.length === 0 ? (
+    <tr>
+      <td
+        colSpan="6"
+        className="px-5 py-10 text-center text-sm text-muted"
+      >
+        No reports generated yet. Complete a label analysis first.
+      </td>
+    </tr>
+  ) : (
+    history.map((report) => (
+      <tr key={report.historyId} className="border-t border-slate-100">
+        <td className="px-5 py-4 font-medium">
+          LegiLabel Report
+        </td>
+
+        <td className="px-5 py-4 text-slate-600">
+          {report.productName || "Product name not detected"}
+        </td>
+
+        <td className="px-5 py-4 text-slate-600">
+          {report.historyDate}
+        </td>
+
+        <td className="px-5 py-4">
+          <ComplianceBadge
+            status={report.status || "Needs Review"}
+          />
+        </td>
+
+        <td className="px-5 py-4">
+          <button
+            type="button"
+            onClick={() => openReport(report)}
+            className="inline-flex items-center gap-1 font-medium text-brand"
+          >
+            <Eye size={14} />
+            View
+          </button>
+        </td>
+
+        <td className="px-5 py-4">
+          <button
+            type="button"
+            onClick={() => generateReport(report, showToast)}      
+            className="inline-flex items-center gap-1 font-medium text-slate-700"
+          >
+            <Download size={14} />
+            Download
+          </button>
+        </td>
+      </tr>
+    ))
+  )}
+</tbody>
         </table>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { currentUser, demoResult } from "../data/demoData";
 
 const AppContext = createContext(null);
@@ -6,7 +6,16 @@ const AppContext = createContext(null);
 export function AppProvider({ children }) {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [lastResult, setLastResult] = useState(demoResult);
+  const [history, setHistory] = useState(() => {
+  const savedHistory = localStorage.getItem("legilabel-history");
+
+  return savedHistory ? JSON.parse(savedHistory) : [];
+});
   const [toast, setToast] = useState("");
+
+  useEffect(() => {
+  localStorage.setItem("legilabel-history", JSON.stringify(history));
+}, [history]);
 
   const value = useMemo(
     () => ({
@@ -15,13 +24,15 @@ export function AppProvider({ children }) {
       setUploadedFile,
       lastResult,
       setLastResult,
+      history,
+      setHistory,
       toast,
       showToast: (message) => {
         setToast(message);
         window.setTimeout(() => setToast(""), 2200);
       },
     }),
-    [uploadedFile, lastResult, toast]
+    [uploadedFile, lastResult, history, toast]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
