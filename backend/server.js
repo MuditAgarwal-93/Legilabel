@@ -521,9 +521,27 @@ image.
 OCR may contain spelling errors, duplicated text, broken words, misplaced
 lines, or incorrectly recognized characters.
 
-Your job is to identify information that is actually present on the label.
+Your job is to identify information that is actually present on the label
+and provide visual observations where requested.
 
-Return ONLY valid JSON.
+IMPORTANT LEGAL DECISION BOUNDARY:
+
+You are an EVIDENCE EXTRACTION system, NOT a legal compliance
+decision-maker.
+
+The application has a separate deterministic compliance engine containing
+predefined legal rules.
+
+You MUST NOT:
+- create new legal rules
+- modify existing legal rules
+- interpret legal requirements
+- decide legal compliance
+- assign Pass, Fail, or Non-Compliant status
+- override the application's rule engine
+
+For visual evidence fields, report ONLY what can actually be observed
+from the provided image.
 
 IMPORTANT RULES:
 
@@ -632,6 +650,45 @@ SCOPE:
   commodity being evaluated.
 - Otherwise return "Review".
 
+VISUAL EVIDENCE:
+
+PRINCIPAL DISPLAY PANEL EVIDENCE:
+Inspect the original product image.
+
+Return an evidence object with:
+
+- "observable": true only when the relevant package display area can be
+  reasonably observed from the provided image.
+- "observable": false when the image does not provide enough visual evidence.
+- "confidence": exactly one of "high", "medium", or "low".
+- "observation": a short description of ONLY what is visibly observable.
+
+Do NOT decide whether the package satisfies the legal requirements for
+the principal display panel.
+
+Do NOT return Pass or Fail.
+
+DECLARATION LEGIBILITY EVIDENCE:
+Inspect the original product image.
+
+Return an evidence object with:
+
+- "observable": true only when declaration readability can reasonably be
+  assessed from the provided image.
+- "observable": false when resolution, blur, glare, obstruction, cropping,
+  angle, or other image limitations prevent reliable assessment.
+- "confidence": exactly one of "high", "medium", or "low".
+- "observation": a short description of ONLY what is visibly observable.
+
+Do NOT decide whether the declarations legally satisfy the requirements.
+
+Do NOT return Pass or Fail.
+
+IMPORTANT:
+Visual evidence describes what can be observed.
+The application's deterministic rule engine will make all legal compliance
+decisions using its predefined rules.
+
 Return exactly these fields:
 
 {
@@ -655,7 +712,17 @@ Return exactly these fields:
   "garmentDetails": "",
   "wholesaleDetails": "",
   "exportDetails": "",
-  "scope": ""
+  "scope": "",
+  "principalDisplayPanelEvidence": {
+    "observable": false,
+    "confidence": "low",
+    "observation": "Not reliably observable from the provided image."
+  },
+  "declarationLegibilityEvidence": {
+    "observable": false,
+    "confidence": "low",
+    "observation": "Not reliably assessable from the provided image."
+  }
 }
 
 OCR TEXT:
@@ -674,18 +741,18 @@ ${text}
     },
   ]);
 
- let responseText = result.response.text().trim();
+  let responseText = result.response.text().trim();
 
-// Gemini may sometimes wrap JSON in Markdown code fences
-if (responseText.startsWith("```")) {
-  responseText = responseText
-    .replace(/^```json\s*/i, "")
-    .replace(/^```\s*/i, "")
-    .replace(/\s*```$/i, "")
-    .trim();
-}
+  // Gemini may sometimes wrap JSON in Markdown code fences
+  if (responseText.startsWith("```")) {
+    responseText = responseText
+      .replace(/^```json\s*/i, "")
+      .replace(/^```\s*/i, "")
+      .replace(/\s*```$/i, "")
+      .trim();
+  }
 
-return JSON.parse(responseText);
+  return JSON.parse(responseText);
 }
 
 // Analyze endpoint with OCR
@@ -790,6 +857,8 @@ try {
   wholesaleDetails: aiProductInfo.wholesaleDetails,
   exportDetails: aiProductInfo.exportDetails,
   scope: aiProductInfo.scope,
+    principalDisplayPanelEvidence: aiProductInfo.principalDisplayPanelEvidence,
+  declarationLegibilityEvidence: aiProductInfo.declarationLegibilityEvidence,
 };
 
 
@@ -832,6 +901,13 @@ const complianceResult = checkCompliance({
   wholesaleDetails: productInfo.wholesaleDetails,
   exportDetails: productInfo.exportDetails,
   scope: productInfo.scope,
+
+  // Visual evidence from Gemini
+  principalDisplayPanelEvidence:
+    productInfo.principalDisplayPanelEvidence,
+
+  declarationLegibilityEvidence:
+    productInfo.declarationLegibilityEvidence,
 
   productCategory,
   productOrigin,

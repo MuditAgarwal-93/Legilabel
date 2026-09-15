@@ -175,7 +175,7 @@ function getPackageType(productInfo) {
 
   // Current LegiLabel flow mainly deals with packaged retail
   // commodities unless the user explicitly specifies another type.
-  return "retail";
+  return "unknown";
 }
 
 // =========================================================
@@ -206,6 +206,15 @@ function getOrigin(productInfo) {
 
 function matchesCondition(rule, productInfo) {
   const conditions = rule.conditions || {};
+
+  // Rule 6(1)(a) does not apply to food articles
+  // according to the supplied legal source.
+  if (
+    rule.id === "LM-001" &&
+    normalize(productInfo.productCategory) === "food"
+  ) {
+    return false;
+  }
 
   const packageType = getPackageType(productInfo);
   const origin = getOrigin(productInfo);
@@ -276,6 +285,9 @@ function makePass(rule, value, detail) {
     ruleReference: rule.ruleReference,
     priority: rule.priority || "medium",
     checkType: rule.checkType,
+
+    // PASS does not need a correction.
+    fixGuidance: null,
   };
 }
 
@@ -292,6 +304,9 @@ function makeFail(rule, detail) {
     ruleReference: rule.ruleReference,
     priority: rule.priority || "medium",
     checkType: rule.checkType,
+
+    // Guidance comes ONLY from the fixed legal rule definition.
+    fixGuidance: rule.fixGuidance || null,
   };
 }
 
@@ -308,6 +323,9 @@ function makeReview(rule, detail) {
     ruleReference: rule.ruleReference,
     priority: rule.priority || "medium",
     checkType: rule.checkType,
+
+    // Guidance comes ONLY from the fixed legal rule definition.
+    fixGuidance: rule.fixGuidance || null,
   };
 }
 
@@ -471,7 +489,9 @@ function checkPrice(rule, value) {
 
   // Look for a currency symbol or a numeric price.
   const hasPricePattern =
-    /₹|\b(?:rs|inr)\.?\s*\d+|\d+(?:\.\d{1,2})?/i.test(text);
+    /(?:₹|rs\.?|inr)\s*\d+(?:\.\d{1,2})?|\b(?:mrp|rsp)\s*[:\-]?\s*(?:₹|rs\.?|inr)?\s*\d+(?:\.\d{1,2})?/i.test(
+      text
+    );
 
   if (!hasPricePattern) {
     return makeReview(
@@ -507,7 +527,9 @@ function checkUnitPrice(rule, value, productInfo) {
   }
 
   // Volume
-  else if (["ml", "millilitre", "milliliter"].includes(quantityUnit)) {
+  else if (
+    ["ml", "millilitre", "milliliter"].includes(quantityUnit)
+  ) {
     expectedUnit = quantityValue < 1000 ? "ml" : "l";
   } else if (
     ["l", "lt", "ltr", "litre", "liter"].includes(quantityUnit)
@@ -524,7 +546,9 @@ function checkUnitPrice(rule, value, productInfo) {
 
   // Items sold by number
   else if (
-    ["no", "nos", "pcs", "piece", "pieces", "number"].includes(quantityUnit)
+    ["no", "nos", "pcs", "piece", "pieces", "number"].includes(
+      quantityUnit
+    )
   ) {
     expectedUnit = "number";
   }
@@ -542,7 +566,9 @@ function checkUnitPrice(rule, value, productInfo) {
     const text = normalize(value);
 
     const hasPrice =
-      /₹|\brs\.?\b|\binr\b|\d+(?:\.\d{1,2})?/i.test(text);
+      /(?:₹|rs\.?|inr)\s*\d+(?:\.\d{1,2})?|\b(?:unit\s*sale\s*price|unit\s*price|price\s*per)\b/i.test(
+        text
+      );
 
     const normalizedText = text.replace(/\s+/g, " ");
 
@@ -581,8 +607,17 @@ function checkUnitPrice(rule, value, productInfo) {
 }
 
 function checkVisual(rule, productInfo) {
-  // In fallback mode, visual checks are not performed because
-  // fallback analysis is based on OCR/text extraction only.
+  /*
+  console.log("VISUAL CHECK RUNNING:", rule.id);
+  console.log("Visual evidence:", {
+    principalDisplayPanelEvidence:
+      productInfo.principalDisplayPanelEvidence,
+    declarationLegibilityEvidence:
+      productInfo.declarationLegibilityEvidence,
+  });
+  */
+
+  // Fallback mode cannot perform visual assessment.
   if (productInfo.analysisMode === "fallback") {
     return makeReview(
       rule,
@@ -590,11 +625,65 @@ function checkVisual(rule, productInfo) {
     );
   }
 
-  // AI mode: use the normal visual verification message.
+  // -----------------------------------------
+  // LM-010: Principal Display Panel
+  // -----------------------------------------
+  if (rule.id === "LM-010") {
+    const evidence = productInfo.principalDisplayPanelEvidence;
+
+    if (!evidence || evidence.observable !== true) {
+      return makeReview(
+        rule,
+        "Principal display panel could not be reliably assessed from the provided image."
+      );
+    }
+
+    if (evidence.confidence !== "high") {
+      return makeReview(
+        rule,
+        `Principal display panel evidence is not sufficiently confident for an automatic decision. Observation: ${evidence.observation}`
+      );
+    }
+
+    return makePass(
+      rule,
+      `Principal display panel is visually observable. ${evidence.observation}`
+    );
+  }
+
+  // -----------------------------------------
+  // LM-011: Declaration Legibility
+  // -----------------------------------------
+  if (rule.id === "LM-011") {
+    const evidence = productInfo.declarationLegibilityEvidence;
+
+    if (!evidence || evidence.observable !== true) {
+      return makeReview(
+        rule,
+        "Declaration legibility could not be reliably assessed from the provided image."
+      );
+    }
+
+    if (evidence.confidence !== "high") {
+      return makeReview(
+        rule,
+        `Declaration legibility evidence is not sufficiently confident for an automatic decision. Observation: ${evidence.observation}`
+      );
+    }
+
+    return makePass(
+      rule,
+      `Declaration legibility is visually assessable. ${evidence.observation}`
+    );
+  }
+
+  // -----------------------------------------
+  // Unknown visual rule
+  // -----------------------------------------
   return makeReview(
     rule,
     rule.reviewCondition ||
-      `${rule.label} requires visual verification of the package image and cannot be reliably determined from OCR alone.`
+      `${rule.label} requires visual verification of the package image.`
   );
 }
 
@@ -692,6 +781,7 @@ function evaluateRule(rule, productInfo) {
       );
   }
 }
+
 // =========================================================
 // SCORE
 // =========================================================

@@ -22,11 +22,25 @@ const packagedCommodityRules = [
     description:
       "The package should declare the applicable manufacturer, packer or importer name and address.",
 
-    passCondition: "Required manufacturer/packer/importer details are detected.",
-    failCondition: "Required manufacturer/packer/importer details are missing.",
-    reviewCondition: "Some details are detected but their completeness cannot be confidently determined.",
+    passCondition:
+      "Required manufacturer/packer/importer details are detected.",
 
-    priority: "high"
+    failCondition:
+      "Required manufacturer/packer/importer details are missing.",
+
+    reviewCondition:
+      "Some details are detected but their completeness cannot be confidently determined.",
+
+    priority: "high",
+
+    fixGuidance: {
+      issue:
+        "Required manufacturer, packer or importer details are missing or incomplete.",
+      action:
+        "Provide the applicable name and address declaration for the manufacturer, packer or importer.",
+      reference:
+        "Rule 6(1)(a), Rule 10"
+    }
   },
 
 
@@ -47,11 +61,25 @@ const packagedCommodityRules = [
     description:
       "The package should declare the common or generic name of the commodity.",
 
-    passCondition: "A recognizable common/generic product name is detected.",
-    failCondition: "No recognizable product name is detected.",
-    reviewCondition: "Text is detected but product identity is uncertain.",
+    passCondition:
+      "A recognizable common/generic product name is detected.",
 
-    priority: "high"
+    failCondition:
+      "No recognizable product name is detected.",
+
+    reviewCondition:
+      "Text is detected but product identity is uncertain.",
+
+    priority: "high",
+
+    fixGuidance: {
+      issue:
+        "Common / Generic Product Name is missing or could not be identified.",
+      action:
+        "Add the common or generic name of the commodity clearly on the package.",
+      reference:
+        "Rule 6(1)(b)"
+    }
   },
 
 
@@ -72,11 +100,25 @@ const packagedCommodityRules = [
     description:
       "The package should declare the net quantity using the appropriate unit and quantity format.",
 
-    passCondition: "Net quantity and an appropriate unit are detected.",
-    failCondition: "Net quantity is missing.",
-    reviewCondition: "Quantity is detected but the unit or applicable quantity format is uncertain.",
+    passCondition:
+      "Net quantity and an appropriate unit are detected.",
 
-    priority: "high"
+    failCondition:
+      "Net quantity is missing.",
+
+    reviewCondition:
+      "Quantity is detected but the unit or applicable quantity format is uncertain.",
+
+    priority: "high",
+
+    fixGuidance: {
+      issue:
+        "Net quantity is missing or could not be reliably verified.",
+      action:
+        "Declare the net quantity of the commodity using the applicable quantity unit and format.",
+      reference:
+        "Rule 6(1)(c), Rules 12–13"
+    }
   },
 
 
@@ -97,11 +139,25 @@ const packagedCommodityRules = [
     description:
       "The applicable month and year declaration should be present on the package.",
 
-    passCondition: "A valid applicable month/year declaration is detected.",
-    failCondition: "No applicable month/year declaration is detected.",
-    reviewCondition: "A date is detected but its meaning or format is uncertain.",
+    passCondition:
+      "A valid applicable month/year declaration is detected.",
 
-    priority: "high"
+    failCondition:
+      "No applicable month/year declaration is detected.",
+
+    reviewCondition:
+      "A date is detected but its meaning or format is uncertain.",
+
+    priority: "high",
+
+    fixGuidance: {
+      issue:
+        "The applicable month / year declaration is missing or could not be identified.",
+      action:
+        "Provide the applicable month and year declaration on the package.",
+      reference:
+        "Rule 6(1)(d)"
+    }
   },
 
 
@@ -122,11 +178,25 @@ const packagedCommodityRules = [
     description:
       "The retail package should declare the applicable retail sale price.",
 
-    passCondition: "MRP/retail sale price is detected.",
-    failCondition: "MRP/retail sale price is missing.",
-    reviewCondition: "A price is detected but it cannot confidently be identified as the applicable MRP.",
+    passCondition:
+      "MRP/retail sale price is detected.",
 
-    priority: "high"
+    failCondition:
+      "MRP/retail sale price is missing.",
+
+    reviewCondition:
+      "A price is detected but it cannot confidently be identified as the applicable MRP.",
+
+    priority: "high",
+
+    fixGuidance: {
+      issue:
+        "The applicable Maximum Retail Price could not be identified.",
+      action:
+        "Declare the applicable retail sale price / MRP clearly on the package.",
+      reference:
+        "Rule 6(1)(e)"
+    }
   },
 
 
@@ -147,11 +217,25 @@ const packagedCommodityRules = [
     description:
       "The package should provide the required consumer complaint/contact details.",
 
-    passCondition: "Consumer care/contact information is detected.",
-    failCondition: "Consumer care/contact information is not detected.",
-    reviewCondition: "Possible contact information is detected but its purpose cannot be confirmed.",
+    passCondition:
+      "Consumer care/contact information is detected.",
 
-    priority: "medium"
+    failCondition:
+      "Consumer care/contact information is not detected.",
+
+    reviewCondition:
+      "Possible contact information is detected but its purpose cannot be confirmed.",
+
+    priority: "medium",
+
+    fixGuidance: {
+      issue:
+        "Required consumer care / contact information is missing or could not be identified.",
+      action:
+        "Provide the applicable consumer complaint or contact details required for the package.",
+      reference:
+        "Rule 6(2)"
+    }
   },
 
 
@@ -177,11 +261,25 @@ const packagedCommodityRules = [
     description:
       "Imported retail packages should declare the country of origin.",
 
-    passCondition: "Country of origin is detected.",
-    failCondition: "Country of origin is missing.",
-    reviewCondition: "A possible origin declaration is detected but cannot be confidently interpreted.",
+    passCondition:
+      "Country of origin is detected.",
 
-    priority: "high"
+    failCondition:
+      "Country of origin is missing.",
+
+    reviewCondition:
+      "A possible origin declaration is detected but cannot be confidently interpreted.",
+
+    priority: "high",
+
+    fixGuidance: {
+      issue:
+        "Country of origin is missing or could not be identified for the imported package.",
+      action:
+        "Declare the country of origin clearly on the imported package.",
+      reference:
+        "Applicable imported-package declaration"
+    }
   },
 
 
@@ -206,11 +304,25 @@ const packagedCommodityRules = [
     description:
       "Where applicable, the package should declare the unit sale price using the prescribed unit based on the commodity's quantity.",
 
-    passCondition: "Applicable unit sale price is detected with a compatible unit.",
-    failCondition: "Applicable unit sale price is missing.",
-    reviewCondition: "A unit price appears present but its unit or applicability cannot be confidently determined.",
+    passCondition:
+      "Applicable unit sale price is detected with a compatible unit.",
 
-    priority: "high"
+    failCondition:
+      "Applicable unit sale price is missing.",
+
+    reviewCondition:
+      "A unit price appears present but its unit or applicability cannot be confidently determined.",
+
+    priority: "high",
+
+    fixGuidance: {
+      issue:
+        "Applicable unit sale price is missing or could not be reliably verified.",
+      action:
+        "Provide the applicable unit sale price using the prescribed quantity basis.",
+      reference:
+        "Rule 6(11)"
+    }
   },
 
 
@@ -235,11 +347,25 @@ const packagedCommodityRules = [
     description:
       "The quantity declaration should use the appropriate permitted unit and represent the quantity supplied to the consumer.",
 
-    passCondition: "Detected quantity uses an appropriate unit.",
-    failCondition: "Detected quantity uses an inappropriate or unsupported unit.",
-    reviewCondition: "The quantity unit cannot be confidently interpreted.",
+    passCondition:
+      "Detected quantity uses an appropriate unit.",
 
-    priority: "medium"
+    failCondition:
+      "Detected quantity uses an inappropriate or unsupported unit.",
+
+    reviewCondition:
+      "The quantity unit cannot be confidently interpreted.",
+
+    priority: "medium",
+
+    fixGuidance: {
+      issue:
+        "The quantity unit could not be confidently verified.",
+      action:
+        "Use the applicable permitted unit and an appropriate quantity format for the declared quantity.",
+      reference:
+        "Rules 11–13"
+    }
   },
 
 
@@ -264,11 +390,25 @@ const packagedCommodityRules = [
     description:
       "Required declarations should be displayed in the prescribed manner on the principal display panel.",
 
-    passCondition: "Required declarations appear to be appropriately positioned and displayed.",
-    failCondition: "A required declaration is clearly absent from the applicable display area.",
-    reviewCondition: "The image is insufficient to reliably assess principal display panel requirements.",
+    passCondition:
+      "Required declarations appear to be appropriately positioned and displayed.",
 
-    priority: "medium"
+    failCondition:
+      "A required declaration is clearly absent from the applicable display area.",
+
+    reviewCondition:
+      "The image is insufficient to reliably assess principal display panel requirements.",
+
+    priority: "medium",
+
+    fixGuidance: {
+      issue:
+        "Principal Display Panel requirements could not be reliably verified.",
+      action:
+        "Ensure the applicable required declarations are displayed in the prescribed manner on the principal display panel.",
+      reference:
+        "Rules 7–9"
+    }
   },
 
 
@@ -289,11 +429,25 @@ const packagedCommodityRules = [
     description:
       "Required declarations should be legible and sufficiently prominent.",
 
-    passCondition: "Declarations appear legible and prominent.",
-    failCondition: "Required declaration is visibly illegible.",
-    reviewCondition: "Image quality or resolution prevents reliable assessment.",
+    passCondition:
+      "Declarations appear legible and prominent.",
 
-    priority: "medium"
+    failCondition:
+      "Required declaration is visibly illegible.",
+
+    reviewCondition:
+      "Image quality or resolution prevents reliable assessment.",
+
+    priority: "medium",
+
+    fixGuidance: {
+      issue:
+        "Required declaration legibility could not be reliably verified.",
+      action:
+        "Ensure required declarations are clearly legible and sufficiently prominent on the package.",
+      reference:
+        "Rules 7–9"
+    }
   },
 
 
@@ -318,11 +472,25 @@ const packagedCommodityRules = [
     description:
       "Certain garments and hosiery articles have additional declaration requirements.",
 
-    passCondition: "Applicable garment-specific declarations are detected.",
-    failCondition: "A required applicable garment declaration is missing.",
-    reviewCondition: "The product is identified as a garment but applicability or required details cannot be confidently established.",
+    passCondition:
+      "Applicable garment-specific declarations are detected.",
 
-    priority: "high"
+    failCondition:
+      "A required applicable garment declaration is missing.",
+
+    reviewCondition:
+      "The product is identified as a garment but applicability or required details cannot be confidently established.",
+
+    priority: "high",
+
+    fixGuidance: {
+      issue:
+        "Applicable garment / hosiery declarations could not be established.",
+      action:
+        "Verify and provide the applicable garment-specific declarations required for the product.",
+      reference:
+        "Rule 26(f)"
+    }
   },
 
 
@@ -347,11 +515,25 @@ const packagedCommodityRules = [
     description:
       "Where the applicable electronic-product provisions permit information to be provided through a QR code, the system should identify the QR code and treat the associated information appropriately.",
 
-    passCondition: "Applicable QR-based information is available or appropriately declared.",
-    failCondition: "A required applicable declaration is absent.",
-    reviewCondition: "QR presence or the information available through it cannot be reliably assessed from the scan.",
+    passCondition:
+      "Applicable QR-based information is available or appropriately declared.",
 
-    priority: "medium"
+    failCondition:
+      "A required applicable declaration is absent.",
+
+    reviewCondition:
+      "QR presence or the information available through it cannot be reliably assessed from the scan.",
+
+    priority: "medium",
+
+    fixGuidance: {
+      issue:
+        "Applicable electronic-product QR information could not be reliably verified.",
+      action:
+        "Verify that the applicable QR-based information is available or appropriately declared.",
+      reference:
+        "Electronic-product QR provisions"
+    }
   },
 
 
@@ -376,11 +558,25 @@ const packagedCommodityRules = [
     description:
       "Wholesale packages have their own applicable declaration requirements.",
 
-    passCondition: "Applicable wholesale declarations are detected.",
-    failCondition: "A required wholesale declaration is missing.",
-    reviewCondition: "The package type or required wholesale information cannot be confidently determined.",
+    passCondition:
+      "Applicable wholesale declarations are detected.",
 
-    priority: "high"
+    failCondition:
+      "A required wholesale declaration is missing.",
+
+    reviewCondition:
+      "The package type or required wholesale information cannot be confidently determined.",
+
+    priority: "high",
+
+    fixGuidance: {
+      issue:
+        "Applicable wholesale package declarations could not be established.",
+      action:
+        "Verify and provide the applicable declarations required for the wholesale package.",
+      reference:
+        "Rule 24"
+    }
   },
 
 
@@ -405,11 +601,25 @@ const packagedCommodityRules = [
     description:
       "Export packages have specific treatment under the rules, particularly if subsequently sold in India.",
 
-    passCondition: "Applicable export-package conditions are satisfied.",
-    failCondition: "The package is identified as non-compliant for the intended Indian sale.",
-    reviewCondition: "The package's intended market or repacking/relabeling status cannot be established from the image.",
+    passCondition:
+      "Applicable export-package conditions are satisfied.",
 
-    priority: "medium"
+    failCondition:
+      "The package is identified as non-compliant for the intended Indian sale.",
+
+    reviewCondition:
+      "The package's intended market or repacking/relabeling status cannot be established from the image.",
+
+    priority: "medium",
+
+    fixGuidance: {
+      issue:
+        "The export package conditions could not be established from the available information.",
+      action:
+        "Verify the intended market and applicable export-package conditions before sale in India.",
+      reference:
+        "Rule 25"
+    }
   },
 
 
@@ -434,11 +644,25 @@ const packagedCommodityRules = [
     description:
       "The system should determine whether the Packaged Commodities Rules apply before evaluating all declarations.",
 
-    passCondition: "Package is within the scope of the applicable rules.",
-    failCondition: "Package is clearly outside the applicable scope.",
-    reviewCondition: "Scope or exemption cannot be determined from available information.",
+    passCondition:
+      "Package is within the scope of the applicable rules.",
 
-    priority: "critical"
+    failCondition:
+      "Package is clearly outside the applicable scope.",
+
+    reviewCondition:
+      "Scope or exemption cannot be determined from available information.",
+
+    priority: "critical",
+
+    fixGuidance: {
+      issue:
+        "The applicability or exemption status of the package could not be determined.",
+      action:
+        "Verify the package type, intended use and applicable exemption conditions before making a final compliance determination.",
+      reference:
+        "Rule 3, Rule 26"
+    }
   }
 
 ];
